@@ -24,16 +24,30 @@ Installation is done in just a couple of steps:
 
 Make sure the bundle is being placed in vendor/bundles/Ingewikkeld/IngewikkeldWrapperBundle. You can do this by using the vendors script, using submodules or downloading the zip file.
 
-#### vendors script
-Open the *deps* file in your Symfony2 project, and add the following:
+#### composer 
+Since Symfony 2.1 deps files are removed. Hence, you'll need to update the composer.json file for the following definition.
 
-    [IngewikkeldWrapperBundle]
-   	    git=git://github.com/Ingewikkeld/IngewikkeldWrapperBundle.git
-    	target=bundles/Ingewikkeld/WrapperBundle
+	"repositories": [
+	    {
+	        "type":"package",
+	        "package": {
+	          "name": "bundles/Ingewikkeld/IngewikkeldWrapperBundle",
+	          "version":"master",
+	          "source": {
+	              "url": "git://github.com/dharmapurikar/IngewikkeldWrapperBundle.git",
+	              "type": "git",
+	              "reference":"master"
+	            }
+	        }
+	    }
+	],
+	"require": {
+	    "bundles/Ingewikkeld/IngewikkeldWrapperBundle": "dev-master"
+	}
 
-Now, install the vendors by running:
-
-	$ bin/vendors install
+	Then run composer install (if it is first time) or composer update (if you have already run composer install).
+	
+	This should install the bundle in vendors directory.
 
 #### submodules
 If you are using Git, you can also use submodules to install the bundle into your project. Execute the following commands in your project root:
@@ -46,12 +60,13 @@ Of course, you can just download the zip file from [Github](https://github.com/I
 
 ### 2. Configure the autoloader
 
-Before the Ingewikkeld namespace can be loaded, we need to set up the autoloader to actually load the namespace. For this to work, you need to edit the *app/autoload.php* file. In the $loader->registerNamespaces() call, you need to add the Ingewikkeld namespace, like this:
+Before the Ingewikkeld namespace can be loaded, we need to set up the autoloader to actually load the namespace. For this to work, you need to edit the *app/autoload.php* file. In the $loader->addPrefix() call, you need to add the Ingewikkeld namespace, like this:
 
-    $loader->registerNamespaces(array(
-		// ...
-        'Ingewikkeld'      => __DIR__.'/../vendor/bundles',
-    ));
+$loader->addPrefix(array(
+	// ...
+	'Ingewikkeld'      => __DIR__.'/../vendor/bundles'
+));
+
 
 ### 3. Enable the bundle
 
